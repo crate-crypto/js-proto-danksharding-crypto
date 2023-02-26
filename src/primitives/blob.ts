@@ -16,7 +16,7 @@ export class Blob {
 
     public static fromBytes(arr: Uint8Array): Blob | Error {
         if (arr.length != Blob.NUMBER_OF_BYTES) {
-            return new Error("got array of size:  " + arr.length + "\n expected an array of size: " + Blob.NUMBER_OF_BYTES)
+            return new Error("unexpected blob size:  " + arr.length)
         }
         return new Blob(arr)
     }
