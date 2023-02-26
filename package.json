@@ -2,7 +2,12 @@
   "name": "js-proto-danksharding-crypto",
   "version": "0.0.1",
   "description": "Cryptography needed for EIP4844",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/crate-crypto/js-proto-danksharding-crypto.git"
@@ -15,5 +20,17 @@
   "bugs": {
     "url": "https://github.com/crate-crypto/js-proto-danksharding-crypto/issues"
   },
-  "homepage": "https://github.com/crate-crypto/js-proto-danksharding-crypto#readme"
+  "homepage": "https://github.com/crate-crypto/js-proto-danksharding-crypto#readme",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
 }
