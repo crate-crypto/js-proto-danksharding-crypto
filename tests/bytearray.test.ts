@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { Bytes32, Bytes48, Bytes96 } from '../src/primitives/bytearrays.js'
 
-describe('invariant', () => {
+describe('invariant - bytearray', () => {
     it('fromBytes', () => {
         for (let i = 0; i < 100; i++) {
             let arr = new Uint8Array(i).fill(i)
