@@ -39,7 +39,7 @@ export class Blob {
         const chunkSize = Bytes32.NUMBER_OF_BYTES;
         for (let i = 0; i < Blob.NUMBER_OF_BYTES; i += chunkSize) {
             const chunk = this.inner.slice(i, i + chunkSize);
-            let bytes32Error = Bytes32.fromUint8Array(chunk);
+            let bytes32Error = Bytes32.fromBytes(chunk);
             // This method will only give an error if the chunkSize
             // is not 32. This would be a bug in our code, so we throw.
             if (bytes32Error instanceof Error) throw bytes32Error;
