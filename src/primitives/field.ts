@@ -17,7 +17,7 @@ export class Scalar {
     public static fromBigIntChecked(integer: bigint): Scalar | Error {
         // This will check if the bigint is 0 <= n < SCALAR_ORDER
         if (bls12_381.Fr.isValid(integer) == false) {
-            return new Error("integer is not valid; it should be less than the modulus")
+            return new Error(integer + " is not less than the modulus")
         }
         return new Scalar(integer);
     }
@@ -74,6 +74,9 @@ export class Scalar {
     // Returns a the byte array and turns it into a field element
     // An error is returned if the element is not reduced
     public static fromBytesChecked(arr: Uint8Array): Scalar | Error {
+        // TODO: can we get rid of this if we just assert that 
+        // TODO everywhere needs to convert to Bytes32 first?
+        // TODO: does this make the code more readable?
         return Scalar.fromBigIntChecked(bytesToNumberLE(arr));
     }
     // Returns `1` in the scalar field.
@@ -152,7 +155,7 @@ export class Scalar {
 // This function will error if the byte array is not canonical
 function bigIntFromBytes32Checked(bytes32: Bytes32): bigint | Error {
     try {
-        return bls12_381.Fr.fromBytes(bytes32.toBytes());
+        return bytesToNumberLE(bytes32.toBytes());
     }
     catch (error) {
         return error as Error
