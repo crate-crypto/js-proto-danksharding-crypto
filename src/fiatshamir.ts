@@ -4,6 +4,8 @@ import { Blob } from "./primitives/blob.js";
 import { numberToBytesLE } from "@noble/curves/abstract/utils";
 import { Bytes48 } from './primitives/bytearrays.js';
 import { concatArrays } from './utils.js';
+import { randomBytes } from '@noble/hashes/utils';
+import { bls12_381 } from '@noble/curves/bls12-381';
 
 // The chosen hash method being used in fiat-shamir
 // In the consensus specs, this is also shown as `hash` and is
@@ -31,6 +33,9 @@ export function computeChallenge(blob: Blob, commitment: Bytes48): Scalar {
 }
 // Computes powers of `scalar` from `0` to `n-1`
 // If n == 0, then an empty array is returned
+// TODO this is only needed for batching multiple verifications
+// TODO together. If we just ask for multiple random integers,
+// TODO, then we can avoid this.
 export function computePowers(scalar: Scalar, n: bigint): Scalar[] {
     let currentPower = Scalar.one()
     let powers = new Array()
@@ -41,4 +46,21 @@ export function computePowers(scalar: Scalar, n: bigint): Scalar[] {
     }
 
     return powers
+}
+
+// Returns cryptographically secure random bytes
+function cryptoRandBytes(numBytes: number): Uint8Array {
+    // We call noble's randomBytes function on the hood
+    // which eventually calls crypto.node or crypto.web
+    return randomBytes(numBytes)
+}
+// Return a cryptographically generated random scalar
+// with negligible bias 
+export function cryptoRandScalar(): Scalar {
+    // we ask for double the amount of random bytes
+    // to make the bias negligible when reducing the
+    // array modulo the field order
+    let numRandBytesToGenerate = bls12_381.CURVE.Fr.BYTES * 2
+    let randBytes = cryptoRandBytes(numRandBytesToGenerate)
+    return Scalar.fromBytesReduce(randBytes)
 }
