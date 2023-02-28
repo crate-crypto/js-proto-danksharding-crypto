@@ -100,7 +100,7 @@ export function VerifyKZGBatch(openingKey: OpenKey, commitments: G1AffinePoint[]
 
     let proofZLinComb = assertNoErrorThrow(G1Point.g1LinCombSlow(proofs, ZiRi))
 
-    let CMinusYs = []
+    let CMinusYs: G1Point[] = []
     for (let i = 0; i < commitments.length; i++) {
         let commitment = G1Point.fromAffine(commitments[i])
         let y = ys[i]

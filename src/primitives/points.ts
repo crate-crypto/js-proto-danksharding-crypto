@@ -229,7 +229,7 @@ export class G2Point {
 
 // Computes multiple pairings, doing only one final exponentiation
 export function pairing_check(pairs: { g1: G1Point, g2: G2Point }[]): boolean {
-    let paired = []
+    let paired = new Array()
 
     for (let i = 0; i < pairs.length; i++) {
         if (pairs[i].g1.isIdentity() || pairs[i].g2.isIdentity()) {
