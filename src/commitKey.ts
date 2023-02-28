@@ -44,6 +44,14 @@ export class CommitKey {
     public commit(polynomial: Polynomial): G1Point {
         // This method will throw if the number of `g1Points` differs from 
         // the number of evaluations in the polynomial. This would be a bug.
+        return assertNoErrorThrow(G1Point.g1LinCombSlow(this.g1Points, polynomial.evaluations()))
+    }
+    // Commits to a polynomial using the commitment key
+    //
+    // This uses a faster Pippenger version which has not been audited.
+    public commitUnsafe(polynomial: Polynomial): G1Point {
+        // This method will throw if the number of `g1Points` differs from 
+        // the number of evaluations in the polynomial. This would be a bug.
         return assertNoErrorThrow(G1Point.g1LinCombUnsafe(this.g1Points, polynomial.evaluations()))
     }
 }
