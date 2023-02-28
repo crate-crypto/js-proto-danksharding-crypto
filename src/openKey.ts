@@ -50,3 +50,34 @@ function verifyKZGProofImpl(openingKey: OpenKey, commitment: G1Point, z: Scalar,
         { g1: pMinusY, g2: openingKey.genG2 }
     ])
 }
+
+
+// This is a naive implementation of verify batching.
+// We should implement the version which uses randomness and or the version 
+// which uses multiple threads.
+//
+// NOTE: The function return type is a bit awkward because I want to do something similar to 
+// Option<Error> in Rust or just error in golang. Where `None` or `nil` means that
+// the verification was successful.
+// Returning a boolean gives less context.
+export function VerifyKZGBatchNaive(openingKey: OpenKey, commitments: G1Point[], zs: Scalar[], ys: Scalar[], proofs: G1Point[]): void | Error {
+    let numCommitments = commitments.length;
+
+    let sameNumInputPoints = numCommitments == zs.length
+    let sameNumOutputPoint = numCommitments == ys.length
+    let sameNumProofs = numCommitments == proofs.length
+    let allLengthsSame = sameNumInputPoints && sameNumOutputPoint && sameNumProofs
+    if (allLengthsSame == false) {
+        // It is okay to throw here and we expect the method that
+        // calls this to ensure that the lengths are the same
+        // We do not throw as we are already returning an error, so it doesn't hurt
+        return new Error("lengths of commitment, inputValues and output values must be the same, got " + numCommitments + "," + zs.length + "," + ys.length)
+    }
+
+    for (let i = 0; i < numCommitments; i++) {
+        let verified = verifyKZGProofImpl(openingKey, commitments[i], zs[i], ys[i], proofs[i])
+        if (verified == false) {
+            return new Error("proof at position " + i + " failed to verify")
+        }
+    }
+}
