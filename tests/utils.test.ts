@@ -4,6 +4,8 @@ import { G1Point, G2Point } from "../src/primitives/points.js";
 import { Scalar } from "../src/primitives/field.js";
 import { Polynomial } from "../src/primitives/polynomial.js";
 import { FIELD_ELEMENTS_PER_BLOB } from "../src/constants.js";
+import { hashToBLSField } from "../src/fiatshamir.js";
+import { numberToBytesLE } from "@noble/curves/abstract/utils";
 
 export function assertArrEqual(lhs: Uint8Array, rhs: Uint8Array) {
     expect(lhs.toString()).to.equal(rhs.toString())
@@ -45,5 +47,14 @@ export function dummyPolynomial(offset: bigint): Polynomial {
 export function constantPolynomial(constant: bigint): Polynomial {
     let constantEvals = new Array(FIELD_ELEMENTS_PER_BLOB).fill(Scalar.fromBigIntReduce(constant))
     return new Polynomial(constantEvals)
+}
+export function randomPoly(seed: bigint): Polynomial {
+    let polyEvals: Scalar[] = []
+    for (let i = 0; i < FIELD_ELEMENTS_PER_BLOB; i++) {
+
+        let evaluation = hashToBLSField(numberToBytesLE(seed + BigInt(i), 32))
+        polyEvals.push(evaluation)
+    }
+    return new Polynomial(polyEvals)
 }
 
