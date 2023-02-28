@@ -60,7 +60,7 @@ function verifyKZGProofImpl(openingKey: OpenKey, commitment: G1Point, z: Scalar,
 // Option<Error> in Rust or just error in golang. Where `None` or `nil` means that
 // the verification was successful.
 // Returning a boolean gives less context.
-export function VerifyKZGBatchNaive(openingKey: OpenKey, commitments: G1Point[], zs: Scalar[], ys: Scalar[], proofs: G1Point[]): void | Error {
+export function VerifyKZGBatchNaive(openingKey: OpenKey, commitments: G1AffinePoint[], zs: Scalar[], ys: Scalar[], proofs: G1AffinePoint[]): void | Error {
     let numCommitments = commitments.length;
 
     let sameNumInputPoints = numCommitments == zs.length
@@ -75,7 +75,7 @@ export function VerifyKZGBatchNaive(openingKey: OpenKey, commitments: G1Point[],
     }
 
     for (let i = 0; i < numCommitments; i++) {
-        let verified = verifyKZGProofImpl(openingKey, commitments[i], zs[i], ys[i], proofs[i])
+        let verified = verifyKZGProofImpl(openingKey, G1Point.fromAffine(commitments[i]), zs[i], ys[i], G1Point.fromAffine(proofs[i]))
         if (verified == false) {
             return new Error("proof at position " + i + " failed to verify")
         }
