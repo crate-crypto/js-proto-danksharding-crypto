@@ -47,8 +47,5 @@ describe('fromCheckedMethods', () => {
         let nonCanonicalBytes32 = assertNoErrorThrow(Bytes32.fromBytes(nonCanonicalBytes))
         scalarErr = Scalar.fromBytes32Checked(nonCanonicalBytes32)
         expect(scalarErr).to.be.instanceOf(Error)
-
-
     })
-
 })
