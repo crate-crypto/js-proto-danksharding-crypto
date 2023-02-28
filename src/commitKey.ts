@@ -9,6 +9,12 @@ import { assertNoErrorThrow } from "./utils.js";
 // For our usecase/kzg, the commit key has a particular 
 // structure,  [G, s*G, s^2*G, s^3*G, s^n*G]
 export class CommitKey {
+    // We store these points as AffinePoints explicitly
+    // instead of Projective, so that we avoid any cost that
+    // comes with normalizing the points.
+    // It is possible to implement an optimization
+    // that notices that z=1 in the future and simply use
+    // G1Point everywhere.
     g1Points: G1AffinePoint[]
 
     private constructor(points: G1AffinePoint[]) {
