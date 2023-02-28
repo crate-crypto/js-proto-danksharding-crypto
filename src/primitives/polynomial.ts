@@ -1,7 +1,7 @@
 import { Scalar } from "./field.js";
 import { Blob } from "./blob.js";
 import { FIELD_ELEMENTS_PER_BLOB, SERIALIZED_SCALAR_SIZE } from "../constants.js";
-import { assertNoErrorThrow } from "../utils.js";
+import { assertNoErrorThrow, concatArrays } from "../utils.js";
 
 export class Polynomial {
     private readonly inner: Scalar[]
@@ -34,17 +34,9 @@ export class Polynomial {
     }
 
     public toBlob(): Blob {
-        let length = Blob.NUMBER_OF_BYTES
-
-        let flattenedArray = new Uint8Array(length);
-        let offset = 0;
-
-        this.evaluations().forEach(item => {
-            flattenedArray.set(item.toBytes(), offset);
-            offset += SERIALIZED_SCALAR_SIZE;
-        });
-
-        return assertNoErrorThrow(Blob.fromBytes(flattenedArray))
+        let evalBytes = this.evaluations().map(evaluation => evaluation.toBytes())
+        let flattenedBytes = concatArrays(evalBytes)
+        return assertNoErrorThrow(Blob.fromBytes(flattenedBytes))
 
     }
     // Returns an evaluation of the polynomial 
