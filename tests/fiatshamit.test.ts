@@ -7,13 +7,13 @@ import { assertArrEqual, assertScalarEqual } from "./utils.test.js"
 
 describe('computePowers', () => {
     it('n=0 edge case', () => {
-        let powers = computePowers(Scalar.one(), 0n)
+        let powers = computePowers(Scalar.one(), 0)
         expect(powers.length).to.equal(0)
     })
     it('smoke test', () => {
         let two = Scalar.fromBigIntReduce(2n);
 
-        let powers = computePowers(two, 4n);
+        let powers = computePowers(two, 4);
 
         // The zeroth power should be 1; 2^0
         assertScalarEqual(powers[0], Scalar.one())

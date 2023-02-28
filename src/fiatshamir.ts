@@ -36,7 +36,7 @@ export function computeChallenge(blob: Blob, commitment: Bytes48): Scalar {
 // TODO this is only needed for batching multiple verifications
 // TODO together. If we just ask for multiple random integers,
 // TODO, then we can avoid this.
-export function computePowers(scalar: Scalar, n: bigint): Scalar[] {
+export function computePowers(scalar: Scalar, n: number): Scalar[] {
     let currentPower = Scalar.one()
     let powers = new Array()
 
