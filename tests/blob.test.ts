@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { SERIALIZED_SCALAR_SIZE } from '../src/constants.js'
-import { Blob } from '../src/primitives/blob.js'
+import { Blob } from '../src/primitives/index.js'
 
 describe('blob - invariant', () => {
     it('fromBytes', () => {

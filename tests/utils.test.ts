@@ -1,8 +1,5 @@
 import { expect } from "chai";
-import { Bytes48, Bytes96 } from "../src/primitives/bytearrays.js";
-import { G1Point, G2Point } from "../src/primitives/points.js";
-import { Scalar } from "../src/primitives/field.js";
-import { Polynomial } from "../src/primitives/polynomial.js";
+import { Bytes48, Bytes96, G1Point, G2Point, Scalar, Polynomial } from "../src/primitives/index.js";
 import { FIELD_ELEMENTS_PER_BLOB } from "../src/constants.js";
 import { hashToBLSField } from "../src/fiatshamir.js";
 import { numberToBytesLE } from "@noble/curves/abstract/utils";

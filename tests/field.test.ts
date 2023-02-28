@@ -1,9 +1,8 @@
 import { expect } from 'chai'
-import { Scalar } from '../src/primitives/field.js'
 import { assertNoErrorThrow } from '../src/utils.js'
 import { bls12_381 } from '@noble/curves/bls12-381'
 import { numberToBytesLE } from '@noble/curves/abstract/utils'
-import { Bytes32 } from '../src/primitives/bytearrays.js'
+import { Bytes32, Scalar } from '../src/primitives/index.js'
 
 describe('batchInvert', () => {
     it('contains zero - batch invert', () => {

@@ -1,7 +1,6 @@
 import { hexToBytes } from "@noble/curves/abstract/utils"
 import { OpenKey } from "../src/openKey.js"
-import { G1Point } from "../src/primitives/points.js"
-import { Scalar } from "../src/primitives/field.js"
+import { G1Point, Scalar } from "../src/primitives/index.js"
 import { assertNoErrorThrow } from "../src/utils.js"
 import { expect } from "chai"
 

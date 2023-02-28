@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Bytes32, Bytes48, Bytes96 } from '../src/primitives/bytearrays.js'
+import { Bytes32, Bytes48, Bytes96 } from '../src/primitives/index.js'
 
 describe('invariant - bytearray', () => {
     it('fromBytes', () => {

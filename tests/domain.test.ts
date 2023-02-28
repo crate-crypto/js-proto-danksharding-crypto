@@ -1,9 +1,7 @@
-import { Blob } from '../src/primitives/blob.js'
-import { Scalar } from '../src/primitives/field.js'
+import { Scalar, Polynomial } from '../src/primitives/index.js'
 import { Domain } from '../src/domain.js'
 import { expect } from 'chai'
 import { FIELD_ELEMENTS_PER_BLOB } from '../src/constants.js';
-import { Polynomial } from '../src/primitives/polynomial.js'
 import { assertArrEqual, assertScalarEqual } from './utils.test.js';
 
 describe('domain', () => {

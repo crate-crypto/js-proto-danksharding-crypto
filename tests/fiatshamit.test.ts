@@ -1,8 +1,6 @@
 import { expect } from "chai"
 import { computeChallenge, computePowers } from '../src/fiatshamir.js'
-import { Scalar } from "../src/primitives/field.js"
-import { G1Point } from "../src/primitives/points.js"
-import { Blob } from "../src/primitives/blob.js"
+import { Scalar, G1Point, Blob } from "../src/primitives/index.js"
 import { assertArrEqual, assertScalarEqual } from "./utils.test.js"
 
 describe('computePowers', () => {

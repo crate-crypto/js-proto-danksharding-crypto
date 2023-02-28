@@ -1,8 +1,6 @@
 import { sha256 } from '@noble/hashes/sha256';
-import { Scalar } from "./primitives/field.js";
-import { Blob } from "./primitives/blob.js";
+import { Scalar, Blob, Bytes48 } from "./primitives/index.js";
 import { numberToBytesLE } from "@noble/curves/abstract/utils";
-import { Bytes48 } from './primitives/bytearrays.js';
 import { concatArrays } from './utils.js';
 import { randomBytes } from '@noble/hashes/utils';
 import { bls12_381 } from '@noble/curves/bls12-381';

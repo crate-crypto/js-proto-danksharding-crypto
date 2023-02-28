@@ -1,6 +1,4 @@
-import { expect } from 'chai'
-import { Scalar } from '../src/primitives/field.js'
-import { G1AffinePoint, G1Point, G2Point } from '../src/primitives/points.js'
+import { Scalar, G1AffinePoint, G1Point } from '../src/primitives/index.js'
 import { assertG1PointEqual } from './utils.test.js'
 import { assertNoErrorThrow } from '../src/utils.js'
 

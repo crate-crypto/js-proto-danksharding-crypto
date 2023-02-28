@@ -1,7 +1,6 @@
 import { hexToBytes } from "@noble/hashes/utils";
 import { FIELD_ELEMENTS_PER_BLOB } from "./constants.js";
-import { G1AffinePoint, G1Point } from "./primitives/points.js";
-import { Polynomial } from "./primitives/polynomial.js";
+import { Polynomial, G1AffinePoint, G1Point } from "./primitives/index.js";
 import reversedCommitKey from './reversedCommitKey.json' assert {type: "json"};
 import { assertNoErrorThrow } from "./utils.js";
 

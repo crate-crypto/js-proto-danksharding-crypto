@@ -1,7 +1,6 @@
 import { hexToBytes } from "@noble/hashes/utils";
 import { FIELD_ELEMENTS_PER_BLOB } from "./constants.js";
-import { Scalar } from "./primitives/field.js";
-import { Polynomial } from "./primitives/polynomial.js";
+import { Scalar, Polynomial } from "./primitives/index.js";
 import reversedRootsOfUnity from './reversedRootsOfUnity.json' assert {type: "json"};
 import { assertNoErrorThrow } from "./utils.js";
 

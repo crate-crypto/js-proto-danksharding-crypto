@@ -1,5 +1,4 @@
-import { Polynomial } from '../src/primitives/polynomial.js'
-import { Scalar } from '../src/primitives/field.js'
+import { Polynomial, Scalar } from '../src/primitives/index.js'
 import { assertNoErrorThrow } from '../src/utils.js'
 import { assertPolyEqual, constantPolynomial, dummyPolynomial } from './utils.test.js'
 

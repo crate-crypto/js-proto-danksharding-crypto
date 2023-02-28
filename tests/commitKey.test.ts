@@ -1,5 +1,4 @@
 import { hexToBytes } from "@noble/curves/abstract/utils"
-import { FIELD_ELEMENTS_PER_BLOB } from "../src/constants.js"
 import { CommitKey } from "../src/commitKey.js"
 import { assertNoErrorThrow } from "../src/utils.js"
 import { assertArrEqual, dummyPolynomial } from "./utils.test.js"
