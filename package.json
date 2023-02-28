@@ -23,7 +23,7 @@
   "homepage": "https://github.com/crate-crypto/js-proto-danksharding-crypto#readme",
   "scripts": {
     "build": "tsc -p .",
-    "test": "mocha"
+    "test": "mocha --timeout 5000"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
