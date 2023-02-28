@@ -23,10 +23,10 @@ export class Domain {
         this.sizeInv = assertNoErrorThrow(Scalar.invert(this._size))
 
     }
-    // Returns a domain from a JSON file which has already reversed
-    // them according to the reverse methods in the specs.
+    // Returns a reversed domain from a JSON file; Reversed
+    // according to the reverse methods in the specs.
     //
-    // Note: We can get them unreversed and implement those
+    // Note: We can get them un-reversed and implement those
     // reversing methods.
     public static fromJson(): Domain {
         let numRoots = reversedRootsOfUnity.length
