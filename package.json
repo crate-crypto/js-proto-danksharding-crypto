@@ -1,6 +1,6 @@
 {
   "name": "@crate-crypto/crypto-4844",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cryptography needed for EIP4844",
   "type": "module",
   "main": "dist/index.js",
@@ -26,6 +26,9 @@
     "test": "mocha --timeout 5000",
     "benchmark": "npm run benchmark:files 'tests/perf/*.test.ts'",
     "benchmark:files": "NODE_OPTIONS='--max-old-space-size=4096 --loader=ts-node/esm' benchmark --config .benchrc.yaml"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@dapplion/benchmark": "^0.2.4",
