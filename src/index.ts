@@ -6,13 +6,19 @@ import { computeKZGProofImpl } from "./kzg.js"
 import { computeChallenge } from "./fiatshamir.js"
 import { assertNoErrorThrow } from "./utils.js"
 
+// Note: we could type alias the fixed type arrays
+// such as `Bytes48`, `Bytes32`, however this will
+// mean that consumers will need to import these types.
+//
 // A serialized commitment to a polynomial.
-export type Commitment = Bytes48
+export type SerializedCommitment = Uint8Array
 // A serialized commitment to a quotient polynomial.
 // The quotient polynomial is what we will use to 
 // prove that a polynomial indeed opens to a particular
 // point.
-export type KZGProof = Bytes48
+// TODO: we could just have `SerializedPoint`
+export type SerializedProof = Uint8Array
+export type SerializedScalar = Uint8Array
 
 // This context object will store everything that one 
 // needs to:
@@ -31,9 +37,11 @@ export class Context {
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#bytes_to_kzg_commitment
-    public blobToKZGCommitment(blob: Blob): Commitment | Error {
+    public blobToKZGCommitment(blobBytes: Uint8Array): SerializedCommitment | Error {
         try {
             // 1. Deserialize and perform validation checks
+            //
+            let blob = assertNoErrorThrow(Blob.fromBytes(blobBytes))
             //
             let polynomial = assertNoErrorThrow(Polynomial.fromBlob(blob))
 
@@ -43,16 +51,19 @@ export class Context {
 
             // 3. Serialize commitment
             //
-            return commitmentPoint.toBytes48()
+            return commitmentPoint.toBytes48().toBytes()
         } catch (error) {
             return error as Error
         }
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#compute_kzg_proof
-    public computeKZGProof(blob: Blob, z: Bytes32): { claimedValue: Scalar, proof: KZGProof } | Error {
+    public computeKZGProof(blobBytes: Uint8Array, zBytes: Uint8Array): { claimedValue: SerializedScalar, proof: SerializedProof } | Error {
         try {
             // 1. Deserialize and perform validation checks
+            //
+            let blob = assertNoErrorThrow(Blob.fromBytes(blobBytes))
+            let z = assertNoErrorThrow(Bytes32.fromBytes(zBytes))
             //
             let polynomial = assertNoErrorThrow(Polynomial.fromBlob(blob))
             let zScalar = assertNoErrorThrow(Scalar.fromBytes32Checked(z))
@@ -63,16 +74,18 @@ export class Context {
 
             // 3. Serialize proof
             //
-            return { claimedValue: proof.claimedValue, proof: proof.quotient.toBytes48() }
+            return { claimedValue: proof.claimedValue.toBytes(), proof: proof.quotient.toBytes48().toBytes() }
         } catch (error) {
             return error as Error
         }
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#compute_blob_kzg_proof
-    public computeBlobKZGProf(blob: Blob): { claimedValue: Bytes32, commitment: Commitment, proof: KZGProof } | Error {
+    public computeBlobKZGProf(blobBytes: Uint8Array): { claimedValue: SerializedScalar, commitment: SerializedCommitment, proof: SerializedProof } | Error {
         try {
             // 1. Deserialize and perform validation checks
+            //
+            let blob = assertNoErrorThrow(Blob.fromBytes(blobBytes))
             //
             let polynomial = assertNoErrorThrow(Polynomial.fromBlob(blob))
 
@@ -91,7 +104,7 @@ export class Context {
 
             // 5. Serialize proof data
             //
-            return { claimedValue: proof.claimedValue.toBytes32(), commitment: commitment, proof: proof.quotient.toBytes48() }
+            return { claimedValue: proof.claimedValue.toBytes32().toBytes(), commitment: commitment.toBytes(), proof: proof.quotient.toBytes48().toBytes() }
         } catch (error) {
             return error as Error
         }
@@ -99,9 +112,14 @@ export class Context {
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#verify_kzg_proof
-    public verifyKZGProof(commitment: Bytes48, z: Bytes32, y: Bytes32, proof: Bytes48): void | Error {
+    public verifyKZGProof(commitmentBytes: Uint8Array, zBytes: Uint8Array, yBytes: Uint8Array, proofBytes: Uint8Array): void | Error {
         try {
             // 1. Deserialize and perform validation checks
+            //
+            let commitment = assertNoErrorThrow(Bytes48.fromBytes(commitmentBytes))
+            let z = assertNoErrorThrow(Bytes32.fromBytes(zBytes))
+            let y = assertNoErrorThrow(Bytes32.fromBytes(yBytes))
+            let proof = assertNoErrorThrow(Bytes48.fromBytes(proofBytes))
             //
             let commitmentPoint = assertNoErrorThrow(G1Point.fromBytes48Checked(commitment))
             let proofPoint = assertNoErrorThrow(G1Point.fromBytes48Checked(proof))
@@ -120,9 +138,13 @@ export class Context {
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#verify_blob_kzg_proof
-    public verifyBlobKZGProof(blob: Blob, commitment: Bytes48, proof: Bytes48): void | Error {
+    public verifyBlobKZGProof(blobBytes: Uint8Array, commitmentBytes: Uint8Array, proofBytes: Uint8Array): void | Error {
         try {
             // 1. Deserialize and perform validation checks
+            //
+            let blob = assertNoErrorThrow(Blob.fromBytes(blobBytes))
+            let commitment = assertNoErrorThrow(Bytes48.fromBytes(commitmentBytes))
+            let proof = assertNoErrorThrow(Bytes48.fromBytes(proofBytes))
             //
             let polynomial = assertNoErrorThrow(Polynomial.fromBlob(blob))
             let commitmentPoint = assertNoErrorThrow(G1Point.fromBytes48Checked(commitment))
@@ -148,7 +170,8 @@ export class Context {
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#verify_blob_kzg_proof_batch
-    public verifyBlobKZGProofBatch(blobs: Blob[], commitments: Bytes48[], proofs: Bytes48[]): void | Error {
+    public verifyBlobKZGProofBatch(blobsBytes: Uint8Array[], commitmentsBytes: Uint8Array[], proofsBytes: Uint8Array[]): void | Error {
+        // TODO check all vectors have same lengths
 
         let commitmentPoints: G1AffinePoint[] = []
         let proofPoints: G1AffinePoint[] = []
@@ -156,10 +179,14 @@ export class Context {
         let claimedValues: Scalar[] = []
 
         try {
-            for (let i = 0; i < blobs.length; i++) {
-                let blob = blobs[i]
-                let commitment = commitments[i]
-                let proof = proofs[i]
+            for (let i = 0; i < blobsBytes.length; i++) {
+                let blobBytes = blobsBytes[i]
+                let commitmentBytes = commitmentsBytes[i]
+                let proofBytes = proofsBytes[i]
+
+                let blob = assertNoErrorThrow(Blob.fromBytes(blobBytes))
+                let commitment = assertNoErrorThrow(Bytes48.fromBytes(commitmentBytes))
+                let proof = assertNoErrorThrow(Bytes48.fromBytes(proofBytes))
 
                 let polynomial = assertNoErrorThrow(Polynomial.fromBlob(blob))
                 let commitmentPoint = assertNoErrorThrow(G1AffinePoint.fromBytesChecked(commitment.toBytes()))
