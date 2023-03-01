@@ -10,14 +10,10 @@ import { assertNoErrorThrow } from "./utils.js"
 // such as `Bytes48`, `Bytes32`, however this will
 // mean that consumers will need to import these types.
 //
-// A serialized commitment to a polynomial.
-export type SerializedCommitment = Uint8Array
-// A serialized commitment to a quotient polynomial.
-// The quotient polynomial is what we will use to 
-// prove that a polynomial indeed opens to a particular
-// point.
-// TODO: we could just have `SerializedPoint`
-export type SerializedProof = Uint8Array
+// A serialized G1Point. This should be 48 bytes.
+export type SerializedPoint = Uint8Array
+// A serialized field element. This should be 
+// 32 bytes.
 export type SerializedScalar = Uint8Array
 
 // This context object will store everything that one 
@@ -37,7 +33,7 @@ export class Context {
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#bytes_to_kzg_commitment
-    public blobToKZGCommitment(blobBytes: Uint8Array): SerializedCommitment | Error {
+    public blobToKZGCommitment(blobBytes: Uint8Array): SerializedPoint | Error {
         try {
             // 1. Deserialize and perform validation checks
             //
@@ -58,7 +54,7 @@ export class Context {
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#compute_kzg_proof
-    public computeKZGProof(blobBytes: Uint8Array, zBytes: Uint8Array): { claimedValue: SerializedScalar, proof: SerializedProof } | Error {
+    public computeKZGProof(blobBytes: Uint8Array, zBytes: Uint8Array): { claimedValue: SerializedScalar, proof: SerializedPoint } | Error {
         try {
             // 1. Deserialize and perform validation checks
             //
@@ -81,7 +77,7 @@ export class Context {
     }
 
     // See: https://github.com/ethereum/consensus-specs/blob/ad58bfc3044fa1d8a8331e2741f8e78a6db795e2/specs/deneb/polynomial-commitments.md#compute_blob_kzg_proof
-    public computeBlobKZGProf(blobBytes: Uint8Array): { claimedValue: SerializedScalar, commitment: SerializedCommitment, proof: SerializedProof } | Error {
+    public computeBlobKZGProf(blobBytes: Uint8Array): { claimedValue: SerializedScalar, commitment: SerializedPoint, proof: SerializedPoint } | Error {
         try {
             // 1. Deserialize and perform validation checks
             //
