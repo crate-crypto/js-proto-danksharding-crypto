@@ -85,7 +85,7 @@ export function VerifyKZGBatchNaive(openingKey: OpenKey, commitments: G1AffinePo
 // We get randomness from a cryptographically secure source
 // so we do not need to use Fiat-Shamir as specified in the specs to generate
 // it.
-export function VerifyKZGBatch(openingKey: OpenKey, commitments: G1AffinePoint[], zs: Scalar[], ys: Scalar[], proofs: G1AffinePoint[]): void | Error {
+export function VerifyKZGBatch(openingKey: OpenKey, commitments: G1AffinePoint[], zs: Scalar[], ys: Scalar[], proofs: G1AffinePoint[]): boolean {
     let randomScalar = cryptoRandScalar()
     let powersOfRandomScalar = computePowers(randomScalar, commitments.length)
 
@@ -114,12 +114,8 @@ export function VerifyKZGBatch(openingKey: OpenKey, commitments: G1AffinePoint[]
     let negAlphaGenG2 = G2Point.neg(openingKey.alphaGenG2)
     let CMinusYAddProofZLinComb = G1Point.add(CMinusYLinComb, proofZLinComb)
 
-    let valid = pairing_check([
+    return pairing_check([
         { g1: proofLinComb, g2: negAlphaGenG2 },
         { g1: CMinusYAddProofZLinComb, g2: openingKey.genG2 }
     ])
-
-    if (valid == false) {
-        return new Error("proof is invalid")
-    }
 }
