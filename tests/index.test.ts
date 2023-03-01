@@ -14,12 +14,12 @@ describe('compute/verify', () => {
         let seed = 123n
         let poly = randomPoly(seed)
         let blob = poly.toBlob().toBytes()
-        let { proof, commitment } = assertNoErrorThrow(context.computeBlobKZGProf(blob))
+        let { proof, commitment } = context.computeBlobKZGProf(blob)
         let result = context.verifyBlobKZGProof(blob, commitment, proof)
-        expect(result).to.not.be.instanceOf(Error)
+        expect(result).to.be.true
 
         result = context.verifyBlobKZGProof(blob, commitment, G1Point.identity().toBytes48().toBytes())
-        expect(result).to.be.instanceOf(Error)
+        expect(result).to.be.false
     })
     it('roundtrip - computeKZGProf', () => {
         let seed = 123n
@@ -28,10 +28,10 @@ describe('compute/verify', () => {
 
         let inputPoint = Scalar.fromBigIntReduce(123456n).toBytes32().toBytes()
 
-        let { proof, claimedValue } = assertNoErrorThrow(context.computeKZGProof(blob, inputPoint))
-        let commitment = assertNoErrorThrow(context.blobToKZGCommitment(blob))
+        let { proof, claimedValue } = context.computeKZGProof(blob, inputPoint)
+        let commitment = context.blobToKZGCommitment(blob)
         let result = context.verifyKZGProof(commitment, inputPoint, claimedValue, proof)
-        expect(result).to.not.be.instanceOf(Error)
+        expect(result).to.be.true
     })
 
     it('roundtrip - batchComputeBlobProof', () => {
@@ -40,10 +40,10 @@ describe('compute/verify', () => {
         let blob = poly.toBlob().toBytes()
 
 
-        let { proof, claimedValue, commitment } = assertNoErrorThrow(context.computeBlobKZGProf(blob))
+        let { proof, claimedValue, commitment } = context.computeBlobKZGProf(blob)
         let result = context.verifyBlobKZGProofBatch([blob, blob], [commitment, commitment], [proof, proof])
-        expect(result).to.not.be.instanceOf(Error)
-        result = context.verifyBlobKZGProofBatch([blob, blob], [commitment, commitment], [proof, proof])
-        expect(result).to.not.be.instanceOf(Error)
+        expect(result).to.be.true
+        result = context.verifyBlobKZGProofBatch([blob, blob], [commitment, G1Point.identity().toBytes48().toBytes()], [proof, proof])
+        expect(result).to.be.false
     })
 })
