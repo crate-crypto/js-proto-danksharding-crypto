@@ -22,9 +22,9 @@ export type SerializedScalar = Uint8Array
 // - Create proofs about Blobs
 // - Verify proofs about Blobs
 export class Context {
-    domain: Domain
-    openingKey: OpenKey
-    commitKey: CommitKey
+    private domain: Domain
+    private openingKey: OpenKey
+    private commitKey: CommitKey
 
     constructor() {
         this.domain = Domain.fromJson()
