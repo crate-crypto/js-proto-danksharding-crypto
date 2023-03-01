@@ -52,39 +52,11 @@ function verifyKZGProofImpl(openingKey: OpenKey, commitment: G1Point, z: Scalar,
 }
 
 
-// This is a naive implementation of verify batching.
-// We should implement the version which uses randomness and or the version 
-// which uses multiple threads.
-//
-// NOTE: The function return type is a bit awkward because I want to do something similar to 
-// Option<Error> in Rust or just error in golang. Where `None` or `nil` means that
-// the verification was successful.
-// Returning a boolean gives less context.
-export function VerifyKZGBatchNaive(openingKey: OpenKey, commitments: G1AffinePoint[], zs: Scalar[], ys: Scalar[], proofs: G1AffinePoint[]): void | Error {
-    let numCommitments = commitments.length;
-
-    let sameNumInputPoints = numCommitments == zs.length
-    let sameNumOutputPoint = numCommitments == ys.length
-    let sameNumProofs = numCommitments == proofs.length
-    let allLengthsSame = sameNumInputPoints && sameNumOutputPoint && sameNumProofs
-    if (allLengthsSame == false) {
-        // It is okay to throw here and we expect the method that
-        // calls this to ensure that the lengths are the same
-        // We do not throw as we are already returning an error, so it doesn't hurt
-        return new Error("lengths of commitment, inputValues and output values must be the same, got " + numCommitments + "," + zs.length + "," + ys.length)
-    }
-
-    for (let i = 0; i < numCommitments; i++) {
-        let verified = verifyKZGProofImpl(openingKey, G1Point.fromAffine(commitments[i]), zs[i], ys[i], G1Point.fromAffine(proofs[i]))
-        if (verified == false) {
-            return new Error("proof at position " + i + " failed to verify")
-        }
-    }
-}
 // Batch verifies multiple KZG proofs using one pairing and randomness
 // We get randomness from a cryptographically secure source
 // so we do not need to use Fiat-Shamir as specified in the specs to generate
 // it.
+// This function assumes that the lengths of each vector are the same.
 export function VerifyKZGBatch(openingKey: OpenKey, commitments: G1AffinePoint[], zs: Scalar[], ys: Scalar[], proofs: G1AffinePoint[]): boolean {
     let randomScalar = cryptoRandScalar()
     let powersOfRandomScalar = computePowers(randomScalar, commitments.length)
