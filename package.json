@@ -1,6 +1,6 @@
 {
   "name": "@crate-crypto/crypto-4844",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Cryptography needed for EIP4844",
   "type": "module",
   "main": "dist/index.js",
