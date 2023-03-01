@@ -1,5 +1,5 @@
 {
-  "name": "js-proto-danksharding-crypto",
+  "name": "crypto-4844",
   "version": "0.0.1",
   "description": "Cryptography needed for EIP4844",
   "type": "module",
