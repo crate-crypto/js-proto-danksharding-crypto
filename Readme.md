@@ -19,6 +19,12 @@ The API is still in flux, currently it takes in types like Bytes48 which can be 
 from a Uint8Array. It may be easier for the caller, if we have an API which is pure Uint8Array and we either throw and exception or return an error when we convert it to
 fixed size types.
 
+## Installation
+
+```
+npm install @crate-crypto/crate-4844
+```
+
 ## Example usage
 
 ```ts
@@ -31,6 +37,4 @@ let { proof, commitment } = assertNoErrorThrow(context.computeBlobKZGProf(blob))
 let result = context.verifyBlobKZGProof(blob, commitment, proof)
 expect(result).to.not.be.instanceOf(Error)
 ```
-## Installation
 
-TODO - upload to npm
