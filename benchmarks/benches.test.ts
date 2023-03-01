@@ -1,6 +1,6 @@
 import { itBench } from "@dapplion/benchmark"
-import { Context } from "../../src/index.js";
-import { dummyPolynomial } from "../utils.test.js";
+import { Context } from "../src/index.js";
+import { dummyPolynomial } from "../tests/utils.test.js";
 
 describe("Prover", () => {
     let context = new Context()

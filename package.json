@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc -p .",
     "test": "mocha --timeout 5000",
-    "benchmark": "npm run benchmark:files 'tests/perf/*.test.ts'",
+    "benchmark": "npm run benchmark:files 'benchmarks/*.test.ts'",
     "benchmark:files": "NODE_OPTIONS='--max-old-space-size=4096 --loader=ts-node/esm' benchmark --config .benchrc.yaml"
   },
   "publishConfig": {
