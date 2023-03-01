@@ -1,6 +1,7 @@
 .vscode
 dist
 TODO
+benchmark_data
 # Taken from : https://github.com/codecov/example-typescript/blob/main/.gitignore
 
 # Logs
