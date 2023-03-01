@@ -8,19 +8,6 @@
   "files": [
     "/dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/crate-crypto/js-proto-danksharding-crypto.git"
-  },
-  "keywords": [
-    "cryptography"
-  ],
-  "author": "Kevaundray Wedderburn",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/crate-crypto/js-proto-danksharding-crypto/issues"
-  },
-  "homepage": "https://github.com/crate-crypto/js-proto-danksharding-crypto#readme",
   "scripts": {
     "build": "tsc -p .",
     "test": "mocha --timeout 5000",
@@ -42,5 +29,18 @@
   "dependencies": {
     "@noble/curves": "^0.7.3",
     "montgomery": "^0.2.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crate-crypto/js-proto-danksharding-crypto.git"
+  },
+  "keywords": [
+    "cryptography"
+  ],
+  "author": "Kevaundray Wedderburn",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/crate-crypto/js-proto-danksharding-crypto/issues"
+  },
+  "homepage": "https://github.com/crate-crypto/js-proto-danksharding-crypto#readme"
 }
