@@ -61,13 +61,16 @@ export class Domain {
             return polynomial.index(index)
         }
 
+        let denominator = this.rootsOfUnity.map(root => Scalar.sub(inputPoint, root))
+        // We throw here because `b` can only be `0`
+        // if the `inputPoint` is in the domain, which we have checked
+        denominator = assertNoErrorThrow(Scalar.batchInvert(denominator))
+
         let result = Scalar.zero()
         for (let i = 0; i < FIELD_ELEMENTS_PER_BLOB; i++) {
             let a = Scalar.mul(polynomial.index(i), this.rootsOfUnity[i])
-            let b = Scalar.sub(inputPoint, this.rootsOfUnity[i])
-            // We throw here because `b` can only be `0`
-            // if the `inputPoint` is in the domain, which we have checked
-            let aDivB = assertNoErrorThrow(Scalar.div(a, b))
+            let b = denominator[i]
+            let aDivB = assertNoErrorThrow(Scalar.mul(a, b))
             result = Scalar.add(result, aDivB)
         }
         result = Scalar.mul(result, this.sizeInv)
